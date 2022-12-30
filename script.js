@@ -62,7 +62,15 @@ function filterStudents(students, searchTerm, table) {
     console.log(filteredStudents)
   
     // Clear the table
-    table.innerHTML = "";
+    table.innerHTML = `<tr>
+    <td>ID</td>
+    <td colspan="3">Name</td>
+    <td>Gender</td>
+    <td>Class</td>
+    <td>Marks</td>
+    <td>Passing</td>
+    <td>Email</td>
+</tr>`;
   
     // Populate the table with the filtered list of students
     for (const student of filteredStudents) {
@@ -104,7 +112,15 @@ aToz.addEventListener('click', () => {
         });
   
         console.log(sortedStudents)
-      table.innerHTML = "";
+      table.innerHTML = `<tr>
+      <td>ID</td>
+      <td colspan="3">Name</td>
+      <td>Gender</td>
+      <td>Class</td>
+      <td>Marks</td>
+      <td>Passing</td>
+      <td>Email</td>
+  </tr>`;
       for (const student of sortedStudents) {
           const row = document.createElement("tr");
   
@@ -146,7 +162,15 @@ zToa.addEventListener('click', () => {
         });
   
         const reverse = sortedStudents.reverse()
-      table.innerHTML = "";
+      table.innerHTML = `<tr>
+      <td>ID</td>
+      <td colspan="3">Name</td>
+      <td>Gender</td>
+      <td>Class</td>
+      <td>Marks</td>
+      <td>Passing</td>
+      <td>Email</td>
+  </tr>`;
       for (const student of reverse) {
           const row = document.createElement("tr");
   
@@ -173,6 +197,55 @@ zToa.addEventListener('click', () => {
     })
     
 })
+
+// sort by marks
+const sortMarks = document.getElementById('three')
+sortMarks.addEventListener('click', () => {
+
+    const students = calling('./MOCK_DATA.json')
+    students.then((item) => {
+
+      const table = document.getElementById('show-table')
+      const sortedStudents = Object.values(item).sort((a, b) => a.marks - b.marks);
+
+      table.innerHTML = `<tr>
+        <td>ID</td>
+        <td colspan="3">Name</td>
+        <td>Gender</td>
+        <td>Class</td>
+        <td>Marks</td>
+        <td>Passing</td>
+        <td>Email</td>
+      </tr>`;
+
+      for (const student of sortedStudents) {
+          const row = document.createElement("tr");
+  
+          var pass
+              if(student.passing)
+              {
+                 pass='passing'
+              }
+              else{
+                  pass='failing'
+              }
+  
+          row.innerHTML +=` 
+          <td id="id">${student.id}</td>
+          <td colspan="3"><img src="${student.img_src}" width="20px" height="20px" id="photo"/> <div id="name">${student.first_name} ${student.last_name}</div></td>
+          <td id="gender">${student.gender}</td>
+          <td id="class">${student.class}</td>
+          <td id="marks">${student.marks}</td>
+          <td id="passing">${pass}</td></td>
+          <td id="mail">${student.email}</td>`
+          
+          table.appendChild(row);
+      }
+    })
+    
+})
+
+//sort by passing
 
 
 
