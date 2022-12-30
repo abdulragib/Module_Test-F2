@@ -40,55 +40,6 @@ function showData(data){
 
 
 // search box filter function
-function filterStudents(students, searchTerm, table) {
-    // Convert the search term to lower case for case-insensitive matching
-    if(searchTerm === undefined)
-    {
-        return
-    }
-
-    searchTerm = searchTerm.toLowerCase();
-
-    console.log(Object.values(students))
-  
-    // Filter the list of students based on the search term
-    const filteredStudents = Object.values(students).filter(student => {
-      return (
-        student.first_name.toLowerCase().includes(searchTerm) ||
-        student.last_name.toLowerCase().includes(searchTerm) ||
-        student.email.toLowerCase().includes(searchTerm)
-      );
-    });
-
-    console.log(filteredStudents)
-  
-    // Clear the table
-    table.innerHTML = `<tr>
-    <td>ID</td>
-    <td colspan="3">Name</td>
-    <td>Gender</td>
-    <td>Class</td>
-    <td>Marks</td>
-    <td>Passing</td>
-    <td>Email</td>
-</tr>`;
-  
-    // Populate the table with the filtered list of students
-    for (const student of filteredStudents) {
-      const row = document.createElement("tr");
-      row.innerHTML = ` 
-      <td id="id">${item.id}</td>
-      <td colspan="3"><img src="${item.img_src}" width="20px" height="20px" id="photo"/> <div id="name">${item.first_name} ${item.last_name}</div></td>
-      <td id="gender">${item.gender}</td>
-      <td id="class">${item.class}</td>
-      <td id="marks">${item.marks}</td>
-      <td id="passing">${pass}</td></td>
-      <td id="mail">${item.email}</td>`
-      table.appendChild(row);
-    }
-  }
-
-
 var temp;
 document.getElementById("input-box").addEventListener('input', function() {
   temp = this.value;
@@ -100,7 +51,56 @@ document.getElementById("input-box").addEventListener('input', function() {
   const searchButton = document.getElementById('search-button')
   console.log(temp)
 
-  searchButton.onclick = filterStudents(students, temp, table)
+  searchButton.addEventListener('click', (students,temp,table)=>{
+     // Convert the search term to lower case for case-insensitive matching
+    if(temp === undefined)
+    {
+        return
+    }
+
+    temp = temp.toLowerCase();
+
+    students.then((item) => {
+  
+      // Filter the list of students based on the search term
+      const filteredStudents = Object.values(item).filter(student => {
+        return (
+          student.first_name.toLowerCase().includes(temp) ||
+          student.last_name.toLowerCase().includes(temp) ||
+          student.email.toLowerCase().includes(temp)
+        );
+      });
+  
+      console.log(filteredStudents)
+    
+      // Clear the table
+      table.innerHTML = `<tr>
+      <td>ID</td>
+      <td colspan="3">Name</td>
+      <td>Gender</td>
+      <td>Class</td>
+      <td>Marks</td>
+      <td>Passing</td>
+      <td>Email</td>
+  </tr>`;
+    
+      // Populate the table with the filtered list of students
+      for (const student of filteredStudents) {
+        const row = document.createElement("tr");
+        row.innerHTML = ` 
+        <td id="id">${student.id}</td>
+        <td colspan="3"><img src="${student.img_src}" width="20px" height="20px" id="photo"/> <div id="name">${item.first_name} ${item.last_name}</div></td>
+        <td id="gender">${student.gender}</td>
+        <td id="class">${student.class}</td>
+        <td id="marks">${student.marks}</td>
+        <td id="passing">${pass}</td></td>
+        <td id="mail">${student.email}</td>`
+        table.appendChild(row);
+      }
+
+    })//promise closing 
+  })//event listner closing
+
 // sort A -> Z
 
 const aToz = document.getElementById('one')
@@ -303,15 +303,7 @@ sortClass.addEventListener('click', () => {
     students.then((item) => {
 
       const table = document.getElementById('show-table')
-      const sortedStudents = Object.values(item).sort((a, b) => {
-        if (a.gender < b.gender) {
-          return -1;
-        }
-        if (a.gender > b.gender) {
-          return 1;
-        }
-        return 0;
-      });
+      const sortedStudents = Object.values(item).sort((a, b) => a.class- b.class)
 
       table.innerHTML = `<tr>
         <td>ID</td>
