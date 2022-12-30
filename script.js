@@ -2,7 +2,6 @@
 const  calling = async(myJson) => {
     const data = await fetch(myJson)
     const body = await data.json()
-    console.log(body)
     return body
 }
 
@@ -49,6 +48,8 @@ function filterStudents(students, searchTerm, table) {
     }
 
     searchTerm = searchTerm.toLowerCase();
+
+    console.log(Object.values(students))
   
     // Filter the list of students based on the search term
     const filteredStudents = Object.values(students).filter(student => {
@@ -86,18 +87,20 @@ function filterStudents(students, searchTerm, table) {
       table.appendChild(row);
     }
   }
-  
+
+
+var temp;
+document.getElementById("input-box").addEventListener('input', function() {
+  temp = this.value;
+})
+
 
   const students = calling('./MOCK_DATA.json')
-  const searchTerm = document.getElementById('input-box').value
   const table = document.getElementById('show-table')
   const searchButton = document.getElementById('search-button')
-  console.log("hello world"+searchTerm)
+  console.log(temp)
 
-  searchButton.onclick = filterStudents(students, searchTerm.value, table)
-
-
-
+  searchButton.onclick = filterStudents(students, temp, table)
 // sort A -> Z
 
 const aToz = document.getElementById('one')
@@ -241,11 +244,198 @@ sortMarks.addEventListener('click', () => {
           
           table.appendChild(row);
       }
-    })
-    
+    })  
 })
 
 //sort by passing
+
+const sortPassing = document.getElementById('four')
+sortPassing.addEventListener('click', () => {
+
+    const students = calling('./MOCK_DATA.json')
+    students.then((item) => {
+
+      const table = document.getElementById('show-table')
+      const sortedStudents = Object.values(item).sort((a, b) => a.passing - b.passing);
+
+      table.innerHTML = `<tr>
+        <td>ID</td>
+        <td colspan="3">Name</td>
+        <td>Gender</td>
+        <td>Class</td>
+        <td>Marks</td>
+        <td>Passing</td>
+        <td>Email</td>
+      </tr>`;
+
+      for (const student of sortedStudents) {
+          const row = document.createElement("tr");
+  
+          var pass
+              if(student.passing)
+              {
+                 pass='passing'
+              }
+              else{
+                  pass='failing'
+              }
+  
+          row.innerHTML +=` 
+          <td id="id">${student.id}</td>
+          <td colspan="3"><img src="${student.img_src}" width="20px" height="20px" id="photo"/> <div id="name">${student.first_name} ${student.last_name}</div></td>
+          <td id="gender">${student.gender}</td>
+          <td id="class">${student.class}</td>
+          <td id="marks">${student.marks}</td>
+          <td id="passing">${pass}</td></td>
+          <td id="mail">${student.email}</td>`
+          
+          table.appendChild(row);
+      }
+    })  
+})
+
+
+//sort by class
+const sortClass = document.getElementById('five')
+sortClass.addEventListener('click', () => {
+
+    const students = calling('./MOCK_DATA.json')
+    students.then((item) => {
+
+      const table = document.getElementById('show-table')
+      const sortedStudents = Object.values(item).sort((a, b) => {
+        if (a.gender < b.gender) {
+          return -1;
+        }
+        if (a.gender > b.gender) {
+          return 1;
+        }
+        return 0;
+      });
+
+      table.innerHTML = `<tr>
+        <td>ID</td>
+        <td colspan="3">Name</td>
+        <td>Gender</td>
+        <td>Class</td>
+        <td>Marks</td>
+        <td>Passing</td>
+        <td>Email</td>
+      </tr>`;
+
+      for (const student of sortedStudents) {
+          const row = document.createElement("tr");
+  
+          var pass
+              if(student.passing)
+              {
+                 pass='passing'
+              }
+              else{
+                  pass='failing'
+              }
+  
+          row.innerHTML +=` 
+          <td id="id">${student.id}</td>
+          <td colspan="3"><img src="${student.img_src}" width="20px" height="20px" id="photo"/> <div id="name">${student.first_name} ${student.last_name}</div></td>
+          <td id="gender">${student.gender}</td>
+          <td id="class">${student.class}</td>
+          <td id="marks">${student.marks}</td>
+          <td id="passing">${pass}</td></td>
+          <td id="mail">${student.email}</td>`
+          
+          table.appendChild(row);
+      }
+    })  
+})
+
+
+//sort by gender
+const sortGender = document.getElementById('six')
+sortGender.addEventListener('click', () => {
+
+    const students = calling('./MOCK_DATA.json')
+    students.then((item) => {
+
+      const table = document.getElementById('show-table')
+      const sortedStudents = Object.values(item).sort((a) => a.gender);
+
+
+      let maleStudents = item.filter(student => student.gender === "Male");
+      let femaleStudents = item.filter(student => student.gender === "Female"); 
+
+      table.innerHTML = `<tr>
+        <td>ID</td>
+        <td colspan="3">Name</td>
+        <td>Gender</td>
+        <td>Class</td>
+        <td>Marks</td>
+        <td>Passing</td>
+        <td>Email</td>
+      </tr>`;
+
+      const captionOne=document.createElement('caption')
+      captionOne.innerHTML="<b>Male Table</b>"
+      table.appendChild(captionOne)
+
+      for (const student of maleStudents) {
+          const row = document.createElement("tr");
+  
+          var pass
+              if(student.passing)
+              {
+                 pass='passing'
+              }
+              else{
+                  pass='failing'
+              }
+  
+          row.innerHTML +=` 
+          <td id="id">${student.id}</td>
+          <td colspan="3"><img src="${student.img_src}" width="20px" height="20px" id="photo"/> <div id="name">${student.first_name} ${student.last_name}</div></td>
+          <td id="gender">${student.gender}</td>
+          <td id="class">${student.class}</td>
+          <td id="marks">${student.marks}</td>
+          <td id="passing">${pass}</td></td>
+          <td id="mail">${student.email}</td>`
+          
+          table.appendChild(row);
+      }
+
+      const femaleTable=document.getElementById('show-table-two')
+
+      const caption=document.createElement('caption')
+      caption.innerHTML="<b>Female Table</b>"
+      femaleTable.appendChild(caption)
+
+      for (const student of femaleStudents) {
+        const row = document.createElement("tr");
+        
+
+        var pass
+            if(student.passing)
+            {
+               pass='passing'
+            }
+            else{
+                pass='failing'
+            }
+
+        row.innerHTML +=` 
+        <td id="id">${student.id}</td>
+        <td colspan="3"><img src="${student.img_src}" width="20px" height="20px" id="photo"/> <div id="name">${student.first_name} ${student.last_name}</div></td>
+        <td id="gender">${student.gender}</td>
+        <td id="class">${student.class}</td>
+        <td id="marks">${student.marks}</td>
+        <td id="passing">${pass}</td></td>
+        <td id="mail">${student.email}</td>`
+
+        
+        femaleTable.appendChild(row);
+    }
+    })  
+})
+
 
 
 

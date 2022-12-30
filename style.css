@@ -12,13 +12,11 @@
     padding: 8px 0 5px 10px;
 }
 
-#search-box{
-    padding: 10px 15px;
-    margin-left:14px;
-}
+
 
 input{
     padding:10px;
+    margin-left:10px;
     width:83%;
     border: 1px solid #000000;
 }
@@ -56,6 +54,7 @@ table{
     height:auto;
     border: 1px solid #000000;
     border-collapse: collapse;
+    margin-bottom:10px;
 }
 
 table tr td{
