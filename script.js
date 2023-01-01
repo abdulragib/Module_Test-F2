@@ -40,24 +40,17 @@ function showData(data){
 
 
 // search box filter function
-var temp;
-document.getElementById("input-box").addEventListener('input', function() {
-  temp = this.value;
-})
-
-
-  const students = calling('./MOCK_DATA.json')
-  const table = document.getElementById('show-table')
+ 
   const searchButton = document.getElementById('search-button')
-  console.log(temp)
 
-  searchButton.addEventListener('click', (students,temp,table)=>{
+  searchButton.addEventListener('click', () => {
+
+    let temp=document.getElementById("input-box").value
+    const students = calling('./MOCK_DATA.json')
+    const table = document.getElementById('show-table')
+    console.log(temp)
+
      // Convert the search term to lower case for case-insensitive matching
-    if(temp === undefined)
-    {
-        return
-    }
-
     temp = temp.toLowerCase();
 
     students.then((item) => {
@@ -86,10 +79,20 @@ document.getElementById("input-box").addEventListener('input', function() {
     
       // Populate the table with the filtered list of students
       for (const student of filteredStudents) {
+
+        var pass
+              if(student.passing)
+              {
+                 pass='passing'
+              }
+              else{
+                  pass='failing'
+              }
+
         const row = document.createElement("tr");
         row.innerHTML = ` 
         <td id="id">${student.id}</td>
-        <td colspan="3"><img src="${student.img_src}" width="20px" height="20px" id="photo"/> <div id="name">${item.first_name} ${item.last_name}</div></td>
+        <td colspan="3"><img src="${student.img_src}" width="20px" height="20px" id="photo"/> <div id="name">${student.first_name} ${student.last_name}</div></td>
         <td id="gender">${student.gender}</td>
         <td id="class">${student.class}</td>
         <td id="marks">${student.marks}</td>
